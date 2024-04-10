@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Medical_center.Core
-build_property.ProjectDir = C:\Users\Admin\source\repos\medical_center_lab_1\Medical_center.Identities\
+build_property.ProjectDir = C:\Проект\Репозиторій\medical_center_lab_1\Medical_center.Identities\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
