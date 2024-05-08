@@ -1,5 +1,8 @@
+using MedicalCenter.Core.Entities;
+using MedicalCenter.Repositories.Common;
 using MedicalCenter.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using System.Diagnostics;
 
 namespace MedicalCenter.WebUI.Controllers
@@ -8,14 +11,16 @@ namespace MedicalCenter.WebUI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IRepository<Appointment, Guid> repository;
+        public HomeController(ILogger<HomeController> logger,
+            IRepository<Appointment, Guid> repository)
         {
             _logger = logger;
+            this.repository = repository;
         }
-
         public IActionResult Index()
         {
-            return View();
+            return View(repository.GetAllAsync());
         }
 
         public IActionResult Privacy()
