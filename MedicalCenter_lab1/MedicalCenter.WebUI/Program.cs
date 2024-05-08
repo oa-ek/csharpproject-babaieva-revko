@@ -1,6 +1,7 @@
 using MedicalCenter.Core.Context;
 using MedicalCenter.Core.Entities;
 using MedicalCenter.Repositories.Common;
+using MedicalCenter.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,15 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("ProjectConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ProjectContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ProjectContext>();
+
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+builder.Services.AddScoped<ProjectContext>();
+
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 

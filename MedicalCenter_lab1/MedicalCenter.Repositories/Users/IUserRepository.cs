@@ -1,12 +1,14 @@
-﻿using System;
+﻿using MedicalCenter.Core.Entities;
+using MedicalCenter.Repositories.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedicalCenter.Repositories.User
+namespace MedicalCenter.Repositories.Users
 {
-    internal interface IUserRepository
+    public interface IUserRepository : IRepository<User, Guid>
     {
     }
 }
