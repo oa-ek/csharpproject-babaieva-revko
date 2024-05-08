@@ -16,7 +16,7 @@ namespace MedicalCenter.Core.Entities
 
         public User? Patient { get; set; }
         [ForeignKey(nameof(Patient))]
-        public string PatientId { get; set; }
+        public Guid? PatientId { get; set; }
 
     }
 }

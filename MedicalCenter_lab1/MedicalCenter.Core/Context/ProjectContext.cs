@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MedicalCenter.Core.Context
 {
-    public class ProjectContext : IdentityDbContext<User>
+    public class ProjectContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public ProjectContext(DbContextOptions<ProjectContext> options)
             : base(options)
