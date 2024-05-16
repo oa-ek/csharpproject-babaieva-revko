@@ -4,6 +4,7 @@ using MedicalCenter.Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalCenter.Core.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20240515214359_Seed3")]
+    partial class Seed3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,26 +54,26 @@ namespace MedicalCenter.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0832572d-7027-48bb-a2df-5f36b537a576"),
-                            DateTime = new DateTime(2024, 5, 17, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6328),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            Id = new Guid("f2a7ee8e-78cb-49f9-b9c7-993643f8a1f1"),
+                            DateTime = new DateTime(2024, 5, 17, 0, 43, 58, 246, DateTimeKind.Local).AddTicks(6219),
+                            DoctorId = new Guid("46d4ea5d-a17e-43b4-b1f9-8e371cee7f71"),
+                            PatientId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             Type = "Проходження медогляду"
                         },
                         new
                         {
-                            Id = new Guid("cd4dec87-cfa8-4d5d-b758-3659461a61f8"),
-                            DateTime = new DateTime(2024, 5, 18, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6425),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            PatientId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
+                            Id = new Guid("d84d5411-2d2f-4782-a9e4-17fcd806e8cd"),
+                            DateTime = new DateTime(2024, 5, 18, 0, 43, 58, 246, DateTimeKind.Local).AddTicks(6358),
+                            DoctorId = new Guid("46d4ea5d-a17e-43b4-b1f9-8e371cee7f71"),
+                            PatientId = new Guid("73ec8fa5-7d1e-4d05-8d94-fb08c1d7e113"),
                             Type = "Біль у горлі"
                         },
                         new
                         {
-                            Id = new Guid("e8f35195-f731-49ab-b215-a67d80c252a8"),
-                            DateTime = new DateTime(2024, 5, 16, 5, 46, 16, 182, DateTimeKind.Local).AddTicks(6441),
-                            DoctorId = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            Id = new Guid("7465435d-0cad-456e-bcd2-0b713ab0c101"),
+                            DateTime = new DateTime(2024, 5, 16, 5, 43, 58, 246, DateTimeKind.Local).AddTicks(6370),
+                            DoctorId = new Guid("1fd3e1c1-ccd3-4ceb-ab32-1f2be0073d90"),
+                            PatientId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             Type = "Виписка з лікарняного"
                         });
                 });
@@ -107,29 +110,29 @@ namespace MedicalCenter.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7b4069b9-904d-4d62-9790-05907bbb9e3b"),
-                            CreatedOn = new DateTime(2024, 5, 16, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6695),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
+                            Id = new Guid("e47c25c5-48e5-4434-894f-b8893245c14b"),
+                            CreatedOn = new DateTime(2024, 5, 16, 0, 43, 58, 246, DateTimeKind.Local).AddTicks(6564),
+                            DoctorId = new Guid("46d4ea5d-a17e-43b4-b1f9-8e371cee7f71"),
                             MainText = "Чудова лікарка, виписала направлення на безкоштовні аналізи, експіріенс десять з десяти",
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            PatientId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             Title = "Все супер"
                         },
                         new
                         {
-                            Id = new Guid("585a0fa3-9115-428f-84c4-473d412f721f"),
-                            CreatedOn = new DateTime(2024, 5, 16, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6708),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
+                            Id = new Guid("99b1657a-c286-40de-a618-a72a99035222"),
+                            CreatedOn = new DateTime(2024, 5, 16, 0, 43, 58, 246, DateTimeKind.Local).AddTicks(6642),
+                            DoctorId = new Guid("46d4ea5d-a17e-43b4-b1f9-8e371cee7f71"),
                             MainText = "Жахливе ставлення, відмовила приймати мене без черги, а мені було просто спитать",
-                            PatientId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
+                            PatientId = new Guid("73ec8fa5-7d1e-4d05-8d94-fb08c1d7e113"),
                             Title = "Немає слів"
                         },
                         new
                         {
-                            Id = new Guid("4315fe48-8127-4478-8812-d81629b15ffc"),
-                            CreatedOn = new DateTime(2024, 5, 16, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6719),
-                            DoctorId = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
+                            Id = new Guid("8ac8d060-cf35-4bcd-b56f-bd365bfa59d7"),
+                            CreatedOn = new DateTime(2024, 5, 16, 0, 43, 58, 246, DateTimeKind.Local).AddTicks(6670),
+                            DoctorId = new Guid("1fd3e1c1-ccd3-4ceb-ab32-1f2be0073d90"),
                             MainText = "Назва коментаря вже все сказала за мене",
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            PatientId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             Title = "Найкраща сімейна лікарка"
                         });
                 });
@@ -161,25 +164,25 @@ namespace MedicalCenter.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6e7806fe-fe1f-4b8f-9d1c-f316a785f38a"),
+                            Id = new Guid("478258e2-bb5d-4735-878e-4b0b9a25b442"),
                             Date = new DateOnly(2023, 4, 29),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            PatientId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             Perscription = "Чай з малиною 4 р. на день, постільний режим",
                             diagnosis = "Гострий бронхіт"
                         },
                         new
                         {
-                            Id = new Guid("c13165aa-0a1a-48fd-bf56-b4ea094a116a"),
+                            Id = new Guid("ff9d34cb-c63f-4921-b806-1ab146e09382"),
                             Date = new DateOnly(2023, 8, 18),
-                            PatientId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
+                            PatientId = new Guid("73ec8fa5-7d1e-4d05-8d94-fb08c1d7e113"),
                             Perscription = "Чай з малиною 4 р. на день, постільний режим",
                             diagnosis = "Ларингіт"
                         },
                         new
                         {
-                            Id = new Guid("11739976-728b-4a43-90f2-567a965ee997"),
+                            Id = new Guid("2a04a9dc-1b1a-4b5d-bcb7-bb0f9cb1f594"),
                             Date = new DateOnly(2024, 5, 8),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            PatientId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             Perscription = "Адаптол 1 таб. 2 р. на день, Гліцисед 1 таб. 3 р. на день, сон мінімум 10 годин на день",
                             diagnosis = "Нервовий зрив"
                         });
@@ -268,11 +271,11 @@ namespace MedicalCenter.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
+                            Id = new Guid("46d4ea5d-a17e-43b4-b1f9-8e371cee7f71"),
                             AccessFailedCount = 0,
                             Address = "Somewhere st, Ukraine",
                             Age = 28,
-                            ConcurrencyStamp = "3130c2ab-1709-4a7f-9fe1-473947553e22",
+                            ConcurrencyStamp = "5b1393b3-65cc-449f-a146-18912aa3db9c",
                             DateOfBirth = new DateOnly(1995, 6, 21),
                             Email = "doctor@medcenter.babaka.page",
                             EmailConfirmed = true,
@@ -280,20 +283,20 @@ namespace MedicalCenter.Core.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DOCTOR@MEDCENTER.BABAKA.PAGE",
                             NormalizedUserName = "DOCTOR@MEDCENTER.BABAKA.PAGE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBeFeAfeRUjSuTqBXI2DPgtf++J+3RnSpoxJxvHcHy392Drzw6KMNdAUNtdoJRjV2g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENx07nw75V3BNhrph3wxi8S247D4kI1iZ6lZh8wXFWiYDFspYniOQ2oPZL2wg1WraA==",
                             PhoneNumberConfirmed = false,
-                            Photo = "/images/cracked raiden shogun.jpg",
-                            SecurityStamp = "1a696673-1a25-4b05-805a-358d1df0246f",
+                            Photo = "/Entities/images/cracked raiden shogun.jpg",
+                            SecurityStamp = "2ee58bd8-aeef-4de2-bbcb-6d55eb290ad7",
                             TwoFactorEnabled = false,
                             UserName = "doctor@medcenter.babaka.page"
                         },
                         new
                         {
-                            Id = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
+                            Id = new Guid("1fd3e1c1-ccd3-4ceb-ab32-1f2be0073d90"),
                             AccessFailedCount = 0,
                             Address = "SomewhereElse st, Ukraine",
                             Age = 25,
-                            ConcurrencyStamp = "c0a61a1c-099e-4218-ae18-195e36603b7f",
+                            ConcurrencyStamp = "35e4bd12-07ff-4dd9-9c04-b4feaa9dfcfc",
                             DateOfBirth = new DateOnly(1998, 6, 21),
                             Email = "doctor@medcenter.kin.page",
                             EmailConfirmed = true,
@@ -302,18 +305,18 @@ namespace MedicalCenter.Core.Migrations
                             NormalizedEmail = "DOCTOR@MEDCENTER.KIN.PAGE",
                             NormalizedUserName = "DOCTOR@MEDCENTER.KIN.PAGE",
                             PhoneNumberConfirmed = false,
-                            Photo = "/images/cracked yae miko.jpg",
-                            SecurityStamp = "047e7c4f-eaba-42c3-bf3e-55da6fd27d21",
+                            Photo = "/Entities/images/cracked yae miko.jpg",
+                            SecurityStamp = "0d015e08-23b7-4b4d-9010-0cb3d3fa42a1",
                             TwoFactorEnabled = false,
                             UserName = "doctor@medcenter.kin.page"
                         },
                         new
                         {
-                            Id = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
+                            Id = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
                             AccessFailedCount = 0,
                             Address = "Somewhere st, Ukraine",
                             Age = 28,
-                            ConcurrencyStamp = "0efe5350-252b-41e3-879a-da051ede028d",
+                            ConcurrencyStamp = "1330b791-bdf6-479b-baf1-b28dfa243709",
                             DateOfBirth = new DateOnly(1995, 6, 21),
                             Email = "patient@medcenter.babaka.page",
                             EmailConfirmed = true,
@@ -321,20 +324,20 @@ namespace MedicalCenter.Core.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PATIENT@MEDCENTER.BABAKA.PAGE",
                             NormalizedUserName = "PATIENT@MEDCENTER.BABAKA.PAGE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFmHPg43vQTT/2P0gY4VPDLIJFeIYBqdKqNjdmzySal8bBrsX+hIorp+rYrirrpHiw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMuc5tqb8s3/9TSNJpDfffZCvXUKWnoHYeGov+ARfY93d1UPZ6BUo8Lj5cxhv2XblA==",
                             PhoneNumberConfirmed = false,
-                            Photo = "/images/Viktor.jpg",
-                            SecurityStamp = "319288c8-5f7b-411d-b564-9994f00ac83b",
+                            Photo = "/Entities/images/Viktor.jpg",
+                            SecurityStamp = "d5e21faf-2359-4b99-b6c2-4d3c723db004",
                             TwoFactorEnabled = false,
                             UserName = "patient@medcenter.babaka.page"
                         },
                         new
                         {
-                            Id = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
+                            Id = new Guid("73ec8fa5-7d1e-4d05-8d94-fb08c1d7e113"),
                             AccessFailedCount = 0,
                             Address = "SomewhereElse st, Ukraine",
                             Age = 25,
-                            ConcurrencyStamp = "1a17e79e-96b1-4d3b-bc65-87a054bc06f7",
+                            ConcurrencyStamp = "9ced1b99-b853-42cd-9e93-35585d17efc9",
                             DateOfBirth = new DateOnly(1998, 6, 21),
                             Email = "patient@medcenter.kin.page",
                             EmailConfirmed = true,
@@ -342,10 +345,10 @@ namespace MedicalCenter.Core.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PATIENT@MEDCENTER.KIN.PAGE",
                             NormalizedUserName = "PATIENT@MEDCENTER.KIN.PAGE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKFk2SbJsyvjmBqe9HC35vE+rJ8pnRT3iR/Fm4yM0ZgsfDEDJvCPiZWv2LhyHrVDKw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIlRkDG4IjFxvfBV1UXrj98qIZumA72ZJ1KwNkFKXShkwizyhe4v9WTLFssVNermnQ==",
                             PhoneNumberConfirmed = false,
-                            Photo = "/images/Andriy.jpg",
-                            SecurityStamp = "e53d2e4d-c29e-4b33-935d-4103dd217489",
+                            Photo = "/Entities/images/Andriy.jpg",
+                            SecurityStamp = "69c7bfad-0399-48e2-a2f6-eec3e883efbc",
                             TwoFactorEnabled = false,
                             UserName = "patient@medcenter.kin.page"
                         });
@@ -381,15 +384,15 @@ namespace MedicalCenter.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a4ff3429-2ace-4453-9a2e-14df1485b082"),
-                            ConcurrencyStamp = "a4ff3429-2ace-4453-9a2e-14df1485b082",
+                            Id = new Guid("d2ca9abf-f933-414b-aed0-02b6abb4271b"),
+                            ConcurrencyStamp = "d2ca9abf-f933-414b-aed0-02b6abb4271b",
                             Name = "Doctor",
                             NormalizedName = "DOCTOR"
                         },
                         new
                         {
-                            Id = new Guid("696c4823-4558-46b6-a7dc-05e645c8597a"),
-                            ConcurrencyStamp = "696c4823-4558-46b6-a7dc-05e645c8597a",
+                            Id = new Guid("ab3be527-444f-4c5d-913e-45a7f30c2a64"),
+                            ConcurrencyStamp = "ab3be527-444f-4c5d-913e-45a7f30c2a64",
                             Name = "Patient",
                             NormalizedName = "PATIENT"
                         });
@@ -483,23 +486,23 @@ namespace MedicalCenter.Core.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            RoleId = new Guid("a4ff3429-2ace-4453-9a2e-14df1485b082")
+                            UserId = new Guid("46d4ea5d-a17e-43b4-b1f9-8e371cee7f71"),
+                            RoleId = new Guid("d2ca9abf-f933-414b-aed0-02b6abb4271b")
                         },
                         new
                         {
-                            UserId = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
-                            RoleId = new Guid("a4ff3429-2ace-4453-9a2e-14df1485b082")
+                            UserId = new Guid("1fd3e1c1-ccd3-4ceb-ab32-1f2be0073d90"),
+                            RoleId = new Guid("d2ca9abf-f933-414b-aed0-02b6abb4271b")
                         },
                         new
                         {
-                            UserId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            RoleId = new Guid("696c4823-4558-46b6-a7dc-05e645c8597a")
+                            UserId = new Guid("e9511a86-b644-4748-bfb2-f3feb796f4a9"),
+                            RoleId = new Guid("ab3be527-444f-4c5d-913e-45a7f30c2a64")
                         },
                         new
                         {
-                            UserId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
-                            RoleId = new Guid("696c4823-4558-46b6-a7dc-05e645c8597a")
+                            UserId = new Guid("73ec8fa5-7d1e-4d05-8d94-fb08c1d7e113"),
+                            RoleId = new Guid("ab3be527-444f-4c5d-913e-45a7f30c2a64")
                         });
                 });
 

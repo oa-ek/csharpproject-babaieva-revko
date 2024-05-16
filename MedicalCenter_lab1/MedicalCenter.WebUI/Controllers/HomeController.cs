@@ -11,16 +11,21 @@ namespace MedicalCenter.WebUI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly IRepository<Appointment, Guid> repository;
+        private readonly IRepository<Appointment, Guid> app_repository;
+        private readonly IRepository<Diagnosis, Guid> dia_repository;
+
         public HomeController(ILogger<HomeController> logger,
-            IRepository<Appointment, Guid> repository)
+            IRepository<Appointment, Guid> app_repository, IRepository<Diagnosis, Guid> dia_repository)
         {
             _logger = logger;
-            this.repository = repository;
+            this.app_repository = app_repository;
+            this.dia_repository = dia_repository;
         }
         public IActionResult Index()
         {
-            return View(repository.GetAllAsync());
+            var appointments = app_repository.GetAllAsync();
+            var diagnoses = dia_repository.GetAllAsync();
+            return View((appointments, diagnoses));
         }
 
         public IActionResult Privacy()

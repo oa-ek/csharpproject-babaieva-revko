@@ -42,6 +42,9 @@ namespace MedicalCenter.Core.Context
                 .HasForeignKey(a => a.PatientId)
                 .IsRequired(false);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Seed();
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Appointment> Appointments  => Set<Appointment>();

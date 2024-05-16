@@ -4,6 +4,7 @@ using MedicalCenter.Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalCenter.Core.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20240515195144_Seed")]
+    partial class Seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,32 +50,6 @@ namespace MedicalCenter.Core.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("0832572d-7027-48bb-a2df-5f36b537a576"),
-                            DateTime = new DateTime(2024, 5, 17, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6328),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            Type = "Проходження медогляду"
-                        },
-                        new
-                        {
-                            Id = new Guid("cd4dec87-cfa8-4d5d-b758-3659461a61f8"),
-                            DateTime = new DateTime(2024, 5, 18, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6425),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            PatientId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
-                            Type = "Біль у горлі"
-                        },
-                        new
-                        {
-                            Id = new Guid("e8f35195-f731-49ab-b215-a67d80c252a8"),
-                            DateTime = new DateTime(2024, 5, 16, 5, 46, 16, 182, DateTimeKind.Local).AddTicks(6441),
-                            DoctorId = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            Type = "Виписка з лікарняного"
-                        });
                 });
 
             modelBuilder.Entity("MedicalCenter.Core.Entities.Comment", b =>
@@ -103,35 +80,6 @@ namespace MedicalCenter.Core.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("7b4069b9-904d-4d62-9790-05907bbb9e3b"),
-                            CreatedOn = new DateTime(2024, 5, 16, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6695),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            MainText = "Чудова лікарка, виписала направлення на безкоштовні аналізи, експіріенс десять з десяти",
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            Title = "Все супер"
-                        },
-                        new
-                        {
-                            Id = new Guid("585a0fa3-9115-428f-84c4-473d412f721f"),
-                            CreatedOn = new DateTime(2024, 5, 16, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6708),
-                            DoctorId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            MainText = "Жахливе ставлення, відмовила приймати мене без черги, а мені було просто спитать",
-                            PatientId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
-                            Title = "Немає слів"
-                        },
-                        new
-                        {
-                            Id = new Guid("4315fe48-8127-4478-8812-d81629b15ffc"),
-                            CreatedOn = new DateTime(2024, 5, 16, 0, 46, 16, 182, DateTimeKind.Local).AddTicks(6719),
-                            DoctorId = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
-                            MainText = "Назва коментаря вже все сказала за мене",
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            Title = "Найкраща сімейна лікарка"
-                        });
                 });
 
             modelBuilder.Entity("MedicalCenter.Core.Entities.Diagnosis", b =>
@@ -157,32 +105,6 @@ namespace MedicalCenter.Core.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Diagnosis");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6e7806fe-fe1f-4b8f-9d1c-f316a785f38a"),
-                            Date = new DateOnly(2023, 4, 29),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            Perscription = "Чай з малиною 4 р. на день, постільний режим",
-                            diagnosis = "Гострий бронхіт"
-                        },
-                        new
-                        {
-                            Id = new Guid("c13165aa-0a1a-48fd-bf56-b4ea094a116a"),
-                            Date = new DateOnly(2023, 8, 18),
-                            PatientId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
-                            Perscription = "Чай з малиною 4 р. на день, постільний режим",
-                            diagnosis = "Ларингіт"
-                        },
-                        new
-                        {
-                            Id = new Guid("11739976-728b-4a43-90f2-567a965ee997"),
-                            Date = new DateOnly(2024, 5, 8),
-                            PatientId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            Perscription = "Адаптол 1 таб. 2 р. на день, Гліцисед 1 таб. 3 р. на день, сон мінімум 10 годин на день",
-                            diagnosis = "Нервовий зрив"
-                        });
                 });
 
             modelBuilder.Entity("MedicalCenter.Core.Entities.User", b =>
@@ -264,91 +186,6 @@ namespace MedicalCenter.Core.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            AccessFailedCount = 0,
-                            Address = "Somewhere st, Ukraine",
-                            Age = 28,
-                            ConcurrencyStamp = "3130c2ab-1709-4a7f-9fe1-473947553e22",
-                            DateOfBirth = new DateOnly(1995, 6, 21),
-                            Email = "doctor@medcenter.babaka.page",
-                            EmailConfirmed = true,
-                            FullName = "Бабаєва Вікторія Вікторівна",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "DOCTOR@MEDCENTER.BABAKA.PAGE",
-                            NormalizedUserName = "DOCTOR@MEDCENTER.BABAKA.PAGE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBeFeAfeRUjSuTqBXI2DPgtf++J+3RnSpoxJxvHcHy392Drzw6KMNdAUNtdoJRjV2g==",
-                            PhoneNumberConfirmed = false,
-                            Photo = "/images/cracked raiden shogun.jpg",
-                            SecurityStamp = "1a696673-1a25-4b05-805a-358d1df0246f",
-                            TwoFactorEnabled = false,
-                            UserName = "doctor@medcenter.babaka.page"
-                        },
-                        new
-                        {
-                            Id = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
-                            AccessFailedCount = 0,
-                            Address = "SomewhereElse st, Ukraine",
-                            Age = 25,
-                            ConcurrencyStamp = "c0a61a1c-099e-4218-ae18-195e36603b7f",
-                            DateOfBirth = new DateOnly(1998, 6, 21),
-                            Email = "doctor@medcenter.kin.page",
-                            EmailConfirmed = true,
-                            FullName = "Коновал Анастасія Андріївна",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "DOCTOR@MEDCENTER.KIN.PAGE",
-                            NormalizedUserName = "DOCTOR@MEDCENTER.KIN.PAGE",
-                            PhoneNumberConfirmed = false,
-                            Photo = "/images/cracked yae miko.jpg",
-                            SecurityStamp = "047e7c4f-eaba-42c3-bf3e-55da6fd27d21",
-                            TwoFactorEnabled = false,
-                            UserName = "doctor@medcenter.kin.page"
-                        },
-                        new
-                        {
-                            Id = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            AccessFailedCount = 0,
-                            Address = "Somewhere st, Ukraine",
-                            Age = 28,
-                            ConcurrencyStamp = "0efe5350-252b-41e3-879a-da051ede028d",
-                            DateOfBirth = new DateOnly(1995, 6, 21),
-                            Email = "patient@medcenter.babaka.page",
-                            EmailConfirmed = true,
-                            FullName = "Бабаєв Віктор Вікторієвич",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "PATIENT@MEDCENTER.BABAKA.PAGE",
-                            NormalizedUserName = "PATIENT@MEDCENTER.BABAKA.PAGE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFmHPg43vQTT/2P0gY4VPDLIJFeIYBqdKqNjdmzySal8bBrsX+hIorp+rYrirrpHiw==",
-                            PhoneNumberConfirmed = false,
-                            Photo = "/images/Viktor.jpg",
-                            SecurityStamp = "319288c8-5f7b-411d-b564-9994f00ac83b",
-                            TwoFactorEnabled = false,
-                            UserName = "patient@medcenter.babaka.page"
-                        },
-                        new
-                        {
-                            Id = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
-                            AccessFailedCount = 0,
-                            Address = "SomewhereElse st, Ukraine",
-                            Age = 25,
-                            ConcurrencyStamp = "1a17e79e-96b1-4d3b-bc65-87a054bc06f7",
-                            DateOfBirth = new DateOnly(1998, 6, 21),
-                            Email = "patient@medcenter.kin.page",
-                            EmailConfirmed = true,
-                            FullName = "Коновал Андрій Анастасійович",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "PATIENT@MEDCENTER.KIN.PAGE",
-                            NormalizedUserName = "PATIENT@MEDCENTER.KIN.PAGE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKFk2SbJsyvjmBqe9HC35vE+rJ8pnRT3iR/Fm4yM0ZgsfDEDJvCPiZWv2LhyHrVDKw==",
-                            PhoneNumberConfirmed = false,
-                            Photo = "/images/Andriy.jpg",
-                            SecurityStamp = "e53d2e4d-c29e-4b33-935d-4103dd217489",
-                            TwoFactorEnabled = false,
-                            UserName = "patient@medcenter.kin.page"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -377,22 +214,6 @@ namespace MedicalCenter.Core.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a4ff3429-2ace-4453-9a2e-14df1485b082"),
-                            ConcurrencyStamp = "a4ff3429-2ace-4453-9a2e-14df1485b082",
-                            Name = "Doctor",
-                            NormalizedName = "DOCTOR"
-                        },
-                        new
-                        {
-                            Id = new Guid("696c4823-4558-46b6-a7dc-05e645c8597a"),
-                            ConcurrencyStamp = "696c4823-4558-46b6-a7dc-05e645c8597a",
-                            Name = "Patient",
-                            NormalizedName = "PATIENT"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -479,28 +300,6 @@ namespace MedicalCenter.Core.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("c6dd4402-f46e-4f03-af1c-92cf452020fd"),
-                            RoleId = new Guid("a4ff3429-2ace-4453-9a2e-14df1485b082")
-                        },
-                        new
-                        {
-                            UserId = new Guid("db0e0bb3-c0df-4adc-a7dc-96c40af97335"),
-                            RoleId = new Guid("a4ff3429-2ace-4453-9a2e-14df1485b082")
-                        },
-                        new
-                        {
-                            UserId = new Guid("6aa82248-9b69-4613-b368-237677e16c22"),
-                            RoleId = new Guid("696c4823-4558-46b6-a7dc-05e645c8597a")
-                        },
-                        new
-                        {
-                            UserId = new Guid("85666de8-8ff5-4e13-b5de-4caa7172c858"),
-                            RoleId = new Guid("696c4823-4558-46b6-a7dc-05e645c8597a")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

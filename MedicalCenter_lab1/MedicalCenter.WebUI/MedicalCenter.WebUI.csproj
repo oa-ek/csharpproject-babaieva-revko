@@ -8,6 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\Andriy.jpg" />
+    <Content Remove="wwwroot\images\cracked raiden shogun.jpg" />
+    <Content Remove="wwwroot\images\cracked yae miko.jpg" />
+    <Content Remove="wwwroot\images\no-avatar.jpg" />
+    <Content Remove="wwwroot\images\Viktor.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\Andriy.jpg" />
+    <None Include="wwwroot\images\cracked raiden shogun.jpg" />
+    <None Include="wwwroot\images\cracked yae miko.jpg" />
+    <None Include="wwwroot\images\no-avatar.jpg" />
+    <None Include="wwwroot\images\Viktor.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.2" />

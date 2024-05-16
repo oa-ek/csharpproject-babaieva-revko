@@ -13,7 +13,7 @@ namespace MedicalCenter.Core.Entities
     public class User : IdentityUser<Guid>, IEntity<Guid>
     {
         public string? FullName { get; set; } = string.Empty;
-        public string? Photo { get; set; } = "/no-avatar.jpg";
+        public string? Photo { get; set; } = "/images/no-avatar.jpg";
         public int? Age { get; set; }
         public DateOnly? DateOfBirth { get; set; }
         public string? Address { get; set; }
