@@ -1,0 +1,17 @@
+﻿@using MedicalCenter.Core.Entities
+@model Diagnosis
+@{
+    var pats = ViewBag.Patients as List<SelectListItem>;
+}
+
+<h1>Видалення запису за @Model.Date </h1>
+
+
+<form asp-action="Delete">
+
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
+
+    <button class="btn btn-primary" type="submit">Видалити</button>
+</form>

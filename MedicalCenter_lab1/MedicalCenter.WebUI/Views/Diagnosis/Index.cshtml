@@ -1,0 +1,45 @@
+﻿@using MedicalCenter.Core.Entities
+@using MedicalCenter.WebUI.Controllers
+@model List<Diagnosis>
+
+@{
+    ViewData["Title"] = "Медична картка";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="/Diagnosis/Create" class="btn btn-success float-end">Додати запис</a>
+
+<div class="float-end" style="width:10px"></div>
+
+<h2 class="mt-3 mb-3">@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Дата запису</th>
+            <th>Діагноз</th>
+            <th>Рекомендації до лікування</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>
+                    <strong>@p.Date</strong>
+                </td>
+                <td><strong>@p.diagnosis</strong></td>
+
+                <td> @p.Perscription</td>
+
+                <td>
+                    <a href="/Diagnosis/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
+                    <a href="/Diagnosis/Delete/@p.Id" class="btn btn-danger">Видалити</a>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

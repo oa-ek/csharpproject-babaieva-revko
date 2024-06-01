@@ -1,0 +1,55 @@
+﻿@using MedicalCenter.Core.Entities
+@model Diagnosis 
+@{
+    var pats = ViewBag.Patients as List<SelectListItem>;
+}
+
+<h1>Редагування запису за @Model.Date </h1>
+
+
+<form asp-action="Edit" enctype="multipart/form-data">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-3">
+                @Html.LabelFor(model => model.Date, "Дата прийому")
+                <input type="date" asp-for="Date" class="form-control" />
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-3">
+                @Html.LabelFor(model => model.diagnosis, "Діагноз")
+                @Html.TextBoxFor(model => model.diagnosis, new { @class = "form-control" })
+                <span asp-validation-for="diagnosis" class="text-danger" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mt-3">
+                @Html.LabelFor(model => model.Perscription, "Рекомендації до лікування")
+                @Html.TextBoxFor(model => model.Perscription, new { @class = "form-control" })
+                <span asp-validation-for="Perscription" class="text-danger" />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <button class="btn btn-primary btn-block" style="width: 100% !important" type="submit">Зберегти</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
