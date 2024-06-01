@@ -8,7 +8,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a href="/appointments/create" class="btn btn-success float-end">Записатися на прийом</a>
+<a href="/Appointment/Create" class="btn btn-success float-end">Записатися на прийом</a>
 <div class="float-end" style="width:10px"></div>
 
 <h2 class="mt-3 mb-3">@ViewData["Title"]</h2>
@@ -34,9 +34,8 @@
                 <td> @p.Type</td>
 
         <td>
-            <a href="/appointments/details/@p.Id" class="btn btn-primary">Детально</a>
-            <a href="/appointments/edit/@p.Id" class="btn btn-warning">Редагувати</a>
-            <a href="/appointments/delete/@p.Id" class="btn btn-danger">Видалити</a>
+                    <a href="/Appointment/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
+                    <a href="/Appointment/Delete/@p.Id" class="btn btn-danger">Видалити</a>
         </td>
             </tr>
         }
