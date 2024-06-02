@@ -64,6 +64,7 @@ namespace MedicalCenter.Core.Context
                 Age = 28,
                 DateOfBirth = new DateOnly(1995, 06, 21),
                 Address = "Somewhere st, Ukraine",
+                PhoneNumber = "0999997890",
                 Photo = "/images/cracked raiden shogun.jpg"
             };
             var doctor2 = new User
@@ -79,17 +80,18 @@ namespace MedicalCenter.Core.Context
                 Age = 25,
                 DateOfBirth = new DateOnly(1998, 06, 21),
                 Address = "SomewhereElse st, Ukraine",
+                PhoneNumber = "0966665432",
                 Photo = "/images/cracked yae miko.jpg"
 
 
             };
 
             PasswordHasher < User > passwordHasher = new PasswordHasher<User>();
-            doctor.PasswordHash = passwordHasher.HashPassword(doctor, "MedCenter08");
-            doctor.PasswordHash = passwordHasher.HashPassword(doctor2, "MedCenter21");
+            doctor.PasswordHash = passwordHasher.HashPassword(doctor, "MedCenter_08");
+            doctor2.PasswordHash = passwordHasher.HashPassword(doctor2, "MedCenter_21");
 
             builder.Entity<User>()
-         .HasData(doctor);
+         .HasData(doctor,doctor2);
 
             builder.Entity<IdentityUserRole<Guid>>()
                   .HasData(
@@ -100,8 +102,7 @@ namespace MedicalCenter.Core.Context
                       }
 
                   );
-            builder.Entity<User>()
-.HasData(doctor2);
+
 
             builder.Entity<IdentityUserRole<Guid>>()
                   .HasData(
@@ -136,6 +137,7 @@ namespace MedicalCenter.Core.Context
                     Age = 28,
                     DateOfBirth = new DateOnly(1995, 06, 21),
                     Address = "Somewhere st, Ukraine",
+                    PhoneNumber = "0988885340",
                     Photo = "/images/Viktor.jpg"
                 };
             var patient2 = new User
@@ -151,16 +153,17 @@ namespace MedicalCenter.Core.Context
                 Age = 25,
                 DateOfBirth = new DateOnly(1998, 06, 21),
                 Address = "SomewhereElse st, Ukraine",
+                PhoneNumber = "0958880540",
                 Photo = "/images/Andriy.jpg"
             };
 
 
             PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
-                 patient.PasswordHash = passwordHasher.HashPassword(patient, "MedCenter08");
-                 patient2.PasswordHash = passwordHasher.HashPassword(patient2, "MedCenter21");
+                 patient.PasswordHash = passwordHasher.HashPassword(patient, "MedCenter_08");
+                 patient2.PasswordHash = passwordHasher.HashPassword(patient2, "MedCenter_21");
 
             builder.Entity<User>()
-.HasData(patient);
+.HasData(patient, patient2);
 
             builder.Entity<IdentityUserRole<Guid>>()
                   .HasData(
@@ -171,8 +174,7 @@ namespace MedicalCenter.Core.Context
                       }
 
                   );
-            builder.Entity<User>()
-.HasData(patient2);
+
 
             builder.Entity<IdentityUserRole<Guid>>()
                   .HasData(
