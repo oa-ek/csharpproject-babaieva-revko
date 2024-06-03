@@ -1,0 +1,40 @@
+﻿﻿@using MedicalCenter.Repositories.Models
+
+@model IEnumerable<UserListItemModel>
+
+@{
+    ViewData["Title"] = "Користувачі";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="/Users/Create" class="btn btn-primary float-end">Створити</a>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Confirmed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.FullName</td>
+                <td>@u.Email</td>
+
+                <td>@string.Join(", ", u.Roles)</td>
+                <td><input class="form-check-input" @(u.IsEmailConfirmed ? "checked" : "") type="checkbox" disabled></td>
+                <td>
+                    <a href="/user/edit/@u.Id" class="btn btn-warning">Edit</a>
+                    <a href="#" data-id="@u.Id" data-email="@u.Email" class="btn btn-danger btn-remove-user">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

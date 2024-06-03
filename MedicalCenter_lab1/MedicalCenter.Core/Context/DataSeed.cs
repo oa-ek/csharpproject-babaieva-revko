@@ -14,20 +14,28 @@ namespace MedicalCenter.Core.Context
     {
         public static void Seed(this ModelBuilder builder)
         {
-            var (dID, pID) = _seedRoles(builder);
-            var (dId1,dId2) = _seedDoctors(builder, dID);
+            var (aID,dID, pID) = _seedRoles(builder);
+            var (dId1,dId2) = _seedDoctors(builder, dID, aID);
             var (pId1,pId2) = _seedPatients(builder, pID);
             _seedAppointment(builder, dId1,dId2, pId1,pId2);
             _seedComment(builder, dId1, dId2, pId1, pId2);
             _seedDiagnosis(builder, pId1,pId2);
         }
-        private static (Guid, Guid) _seedRoles(ModelBuilder builder)
+        private static (Guid, Guid, Guid) _seedRoles(ModelBuilder builder)
         {
+            var ADMIN_ROLE_ID = Guid.NewGuid();
             var DOCTOR_ROLE_ID = Guid.NewGuid();
             var PATIENT_ROLE_ID = Guid.NewGuid();
 
             builder.Entity<IdentityRole<Guid>>()
                 .HasData(
+                 new IdentityRole<Guid>
+                 {
+                     Id = ADMIN_ROLE_ID,
+                     Name = "Admin",
+                     NormalizedName = "ADMIN",
+                     ConcurrencyStamp = ADMIN_ROLE_ID.ToString()
+                 },
                 new IdentityRole<Guid>
                 {
                     Id = DOCTOR_ROLE_ID,
@@ -43,9 +51,9 @@ namespace MedicalCenter.Core.Context
                     ConcurrencyStamp = PATIENT_ROLE_ID.ToString(),
                 }
                 );
-            return (DOCTOR_ROLE_ID, PATIENT_ROLE_ID);
+            return (ADMIN_ROLE_ID, DOCTOR_ROLE_ID, PATIENT_ROLE_ID);
         }
-        static (Guid, Guid) _seedDoctors(ModelBuilder builder, Guid DOCTOR_ROLE_ID)
+        static (Guid, Guid) _seedDoctors(ModelBuilder builder, Guid DOCTOR_ROLE_ID, Guid ADMIN_ROLE_ID)
         {
             var doctorId = Guid.NewGuid();
             var doctorId2 = Guid.NewGuid();
@@ -98,6 +106,11 @@ namespace MedicalCenter.Core.Context
                       new IdentityUserRole<Guid>
                       {
                           RoleId = DOCTOR_ROLE_ID,
+                          UserId = doctorId
+                      },
+                      new IdentityUserRole<Guid>
+                      {
+                          RoleId = ADMIN_ROLE_ID,
                           UserId = doctorId
                       }
 

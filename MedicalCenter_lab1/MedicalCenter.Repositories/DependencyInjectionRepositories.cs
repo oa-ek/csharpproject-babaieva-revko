@@ -23,6 +23,8 @@ namespace MedicalCenter.Repositories
             services.AddScoped<ICommentRepository,CommentRepository>();
             services.AddScoped<IDiagnosisRepository, DiagnosisRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserManager<User>>();
+            services.AddScoped<RoleManager<IdentityRole<Guid>>>();
 
         }
     }
