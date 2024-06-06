@@ -1,0 +1,71 @@
+﻿@page "/appointment/get-all"
+@inject NavigationManager Navigation
+@inject IObjService<AppointmentDTO, AppointmentCreateDTO, AppointmentUpdateDTO> AppointmentService
+@inject IMapper mapper
+
+<link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+<a href="/appointment/add" class="btn btn-success float-end">Add Appointment</a>
+<div class="float-end" style="width:10px"></div>
+<h2 class="mt-3 mb-3">Appointments</h2>
+
+@if (appointments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!appointments.Any())
+{
+    <p>No appointments at the moment.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center align-middle">
+                <th>Date and Time</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in appointments)
+            {
+                <tr class="text-center align-middle">
+                    <td><strong>@appointment.DateTime</strong></td>
+                    <td>@appointment.Patient.Name</td>
+                    <td>@appointment.Doctor.Name</td>
+                    <td>@appointment.Type</td>
+                    <td class="text-center d-flex justify-content-evenly">
+                        <a href="appointment/@appointment.Id" class="btn btn-warning w-25">Edit</a>
+                        <button @onclick="() => Delete(appointment.Id)" class="btn btn-danger w-25">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<AppointmentDTO> appointments = new List<AppointmentDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            AppointmentService.SetEndpoint("appointment");
+            appointments = await AppointmentService.GetObjects();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching appointments: {ex.Message}");
+        }
+    }
+
+    async Task Delete(Guid id)
+    {
+        await AppointmentService.DeleteObject(id);
+        appointments = await AppointmentService.GetObjects();
+    }
+}

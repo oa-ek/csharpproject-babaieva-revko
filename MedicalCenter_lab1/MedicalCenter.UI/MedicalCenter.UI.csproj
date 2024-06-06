@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MedicalCenter.Core\MedicalCenter.Core.csproj" />
     <ProjectReference Include="..\MedicalCenter.Infrastructure\MedicalCenter.Infrastructure.csproj" />
   </ItemGroup>
 
