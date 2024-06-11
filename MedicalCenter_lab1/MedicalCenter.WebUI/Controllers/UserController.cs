@@ -13,9 +13,11 @@ namespace MedicalCenter.WebUI.Controllers
             this.userRepository = userRepository;
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
+            string pageTitle = User.IsInRole("Doctor") ? "Пацієнти" : User.IsInRole("Patient") ? "Лікарі" : "Користувачі";
+            ViewData["Title"] = pageTitle;
+
             return View(await userRepository.GetAllWithRolesAsync());
         }
 
@@ -76,6 +78,7 @@ namespace MedicalCenter.WebUI.Controllers
         {
             await userRepository.DeleteUser(id);
         }
-    }
 
+
+    }
 }

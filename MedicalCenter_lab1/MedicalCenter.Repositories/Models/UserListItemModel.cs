@@ -17,7 +17,6 @@ namespace MedicalCenter.Repositories.Models
         public DateOnly? DateOfBirth { get; set; }
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
-        public bool IsEmailConfirmed { get; set; }
         public List<IdentityRole<Guid>>? Roles { get; set; }
     }
 }

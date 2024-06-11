@@ -1,11 +1,13 @@
 ﻿using Humanizer;
 using MedicalCenter.Core.Entities;
-using MedicalCenter.Repositories.Appointments;
 using MedicalCenter.Repositories.Comments;
 using MedicalCenter.Repositories.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
+using System.Security.Claims;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MedicalCenter.WebUI.Controllers
 {
@@ -13,7 +15,6 @@ namespace MedicalCenter.WebUI.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IUserRepository _userRepository;
-
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public CommentController(
@@ -28,12 +29,36 @@ namespace MedicalCenter.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _commentRepository.GetAllAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var comments = await _commentRepository.GetAllAsync();
+            List<Comment> filteredComments;
+
+            if (User.IsInRole("Doctor"))
+            {
+                filteredComments = comments.Where(c => c.DoctorId.ToString() == userId).ToList();
+            }
+            else if (User.IsInRole("Patient"))
+            {
+                filteredComments = comments.Where(c => c.PatientId.ToString() == userId).ToList();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+            return View(filteredComments);
         }
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
+            var doctors = await _userRepository.GetUsersByRoleAsync("Doctor");
+            ViewBag.Doctors = doctors
                 .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
 
             return View(new Comment());
@@ -45,14 +70,24 @@ namespace MedicalCenter.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized();
+                }
+                model.PatientId = Guid.Parse(userId);
+                model.CreatedOn = DateTime.UtcNow;
                 await _commentRepository.CreateAsync(model);
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
+
+            var doctors = await _userRepository.GetUsersByRoleAsync("Doctor");
+            ViewBag.Doctors = doctors
                 .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
 
             return View(model);
         }
+
         [HttpGet("Comment/Edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -62,7 +97,14 @@ namespace MedicalCenter.WebUI.Controllers
                 return NotFound();
             }
 
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (comment.PatientId.ToString() != userId)
+            {
+                return Unauthorized();
+            }
+
+            var doctors = await _userRepository.GetUsersByRoleAsync("Doctor");
+            ViewBag.Doctors = doctors
                 .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
 
             return View(comment);
@@ -74,11 +116,32 @@ namespace MedicalCenter.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _commentRepository.UpdateAsync(model);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var existingComment = await _commentRepository.GetAsync(id);
+
+                if (existingComment == null)
+                {
+                    return NotFound();
+                }
+
+                if (existingComment.PatientId.ToString() != userId)
+                {
+                    return Unauthorized();
+                }
+
+                // Update the existing comment with values from the model
+                existingComment.DoctorId = model.DoctorId;
+                existingComment.Title = model.Title;
+                existingComment.MainText = model.MainText;
+                // Ensure CreatedOn is not modified
+                existingComment.CreatedOn = existingComment.CreatedOn;
+
+                await _commentRepository.UpdateAsync(existingComment);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
+            var doctors = await _userRepository.GetUsersByRoleAsync("Doctor");
+            ViewBag.Doctors = doctors
                 .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
 
             return View(model);
@@ -86,7 +149,19 @@ namespace MedicalCenter.WebUI.Controllers
 
         public async Task<IActionResult> Delete(Guid id)
         {
-            return View(await _commentRepository.GetAsync(id));
+            var comment = await _commentRepository.GetAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (comment.PatientId.ToString() != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(comment);
         }
 
         [HttpPost]

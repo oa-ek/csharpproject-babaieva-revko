@@ -64,7 +64,6 @@ namespace MedicalCenter.Repositories.Users
                 Id = user.Id,
                 Email = user.Email,
                 FullName = user.FullName,
-                IsEmailConfirmed = user.EmailConfirmed,
                 Roles = new List<IdentityRole<Guid>>()
             };
 
@@ -99,6 +98,17 @@ namespace MedicalCenter.Repositories.Users
 
                 await _userManager.DeleteAsync(user);
             }
+        }
+        public async Task<IEnumerable<User>> GetUsersByRoleAsync(string roleName)
+        {
+            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+            if (role == null)
+            {
+                return new List<User>();
+            }
+
+            var usersInRole = await _userManager.GetUsersInRoleAsync(roleName);
+            return usersInRole;
         }
     }
 }

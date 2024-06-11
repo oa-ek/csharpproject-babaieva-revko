@@ -1,46 +1,65 @@
 ﻿@using MedicalCenter.Core.Entities
-@using MedicalCenter.WebUI.Controllers
-@model List<Appointment>
-
+@model IEnumerable<Appointment>
 
 @{
-    ViewData["Title"] = "Список прийомів";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Записи на прийом";
 }
 
-<a href="/Appointment/Create" class="btn btn-success float-end">Записатися на прийом</a>
-<div class="float-end" style="width:10px"></div>
-
-<h2 class="mt-3 mb-3">@ViewData["Title"]</h2>
+<h2>@ViewData["Title"]</h2>
 
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Дата і час прийому</th>
-            <th>Лікар</th>
-            <th>Опис проблеми</th>
+            <th>Дата і час</th>
+            <th>Короткий опис проблеми</th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Лікар</th>
+                <th>Пацієнт</th>
+            }
+            else if (User.IsInRole("Doctor"))
+            {
+                <th>Пацієнт</th>
+            }
+            else if (User.IsInRole("Patient"))
+            {
+                <th>Лікар</th>
+            }
             <th>Дії</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var p in Model)
+        @foreach (var appointment in Model)
         {
             <tr>
+                <td>@appointment.DateTime</td>
+                <td>@appointment.Type</td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <img src="@appointment.Doctor.Photo" /><br />@appointment.Doctor.FullName
+                    </td>
+                    <td>
+                        <img src="@appointment.Patient.Photo" /><br />@appointment.Patient.FullName
+                    </td>
+                }
+                else if (User.IsInRole("Doctor"))
+                {
+                    <td>
+                        <img src="@appointment.Patient.Photo" /><br />@appointment.Patient.FullName
+                    </td>
+                }
+                else if (User.IsInRole("Patient"))
+                {
+                    <td>
+                        <img src="@appointment.Doctor.Photo" /><br />@appointment.Doctor.FullName
+                        </td>
+                }
                 <td>
-            <strong>@p.DateTime</strong>
+                    <a href="@Url.Action("Edit", new { id = appointment.Id })" class="btn btn-warning">Редагувати</a>
+                    <a href="@Url.Action("Delete", new { id = appointment.Id })" class="btn btn-danger">Видалити</a>
                 </td>
-                <td><img src="@p.Doctor.Photo" /><br />@p.Doctor.FullName</td>
-                
-                <td> @p.Type</td>
-
-        <td>
-                    <a href="/Appointment/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
-                    <a href="/Appointment/Delete/@p.Id" class="btn btn-danger">Видалити</a>
-        </td>
             </tr>
         }
-
-
     </tbody>
 </table>
-

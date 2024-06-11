@@ -4,7 +4,10 @@ using MedicalCenter.Repositories.Appointments;
 using MedicalCenter.Repositories.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
+using System.Security.Claims;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MedicalCenter.WebUI.Controllers
 {
@@ -12,7 +15,6 @@ namespace MedicalCenter.WebUI.Controllers
     {
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IUserRepository _userRepository;
-
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public AppointmentController(
@@ -27,14 +29,39 @@ namespace MedicalCenter.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View( await _appointmentRepository.GetAllAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var appointments = await _appointmentRepository.GetAllAsync();
+            List<Appointment> filteredAppointments;
+
+            if (User.IsInRole("Admin"))
+            {
+                filteredAppointments = appointments.ToList();
+            }
+            else if (User.IsInRole("Doctor"))
+            {
+                filteredAppointments = appointments.Where(a => a.DoctorId.ToString() == userId).ToList();
+            }
+            else if (User.IsInRole("Patient"))
+            {
+                filteredAppointments = appointments.Where(a => a.PatientId.ToString() == userId).ToList();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+            return View(filteredAppointments);
         }
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
-                .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
-
+            await PopulateDoctorAndPatientLists();
             return View(new Appointment());
         }
 
@@ -42,16 +69,34 @@ namespace MedicalCenter.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Appointment model)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (ModelState.IsValid)
             {
+                if (User.IsInRole("Patient"))
+                {
+                    model.PatientId = Guid.Parse(userId);
+                }
+                else if (User.IsInRole("Doctor"))
+                {
+                    model.DoctorId = Guid.Parse(userId);
+                }
+
+                if (model.PatientId == model.DoctorId)
+                {
+                    ModelState.AddModelError("", "Doctor and Patient cannot be the same person.");
+                    await PopulateDoctorAndPatientLists();
+                    return View(model);
+                }
+
                 await _appointmentRepository.CreateAsync(model);
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
-                .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString()}).ToList();
 
+            await PopulateDoctorAndPatientLists();
             return View(model);
         }
+
         [HttpGet("Appointment/Edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -61,9 +106,13 @@ namespace MedicalCenter.WebUI.Controllers
                 return NotFound();
             }
 
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
-                .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (appointment.PatientId.ToString() != userId && appointment.DoctorId.ToString() != userId && !User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
 
+            await PopulateDoctorAndPatientLists(); // Populate doctor and patient lists
             return View(appointment);
         }
 
@@ -71,21 +120,63 @@ namespace MedicalCenter.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, Appointment model)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (ModelState.IsValid)
             {
-                await _appointmentRepository.UpdateAsync(model);
+                var appointment = await _appointmentRepository.GetAsync(id);
+
+                if (appointment == null)
+                {
+                    return NotFound();
+                }
+
+                if (appointment.PatientId.ToString() != userId && appointment.DoctorId.ToString() != userId && !User.IsInRole("Admin"))
+                {
+                    return Unauthorized();
+                }
+
+                appointment.DateTime = model.DateTime;
+                appointment.DoctorId = model.DoctorId;
+                appointment.Type = model.Type;
+
+                if (User.IsInRole("Doctor"))
+                {
+                    appointment.PatientId = model.PatientId; // Assign selected patient if user is a doctor
+                }
+
+                if (appointment.PatientId == appointment.DoctorId)
+                {
+                    ModelState.AddModelError("", "Doctor and Patient cannot be the same person.");
+                    await PopulateDoctorAndPatientLists();
+                    return View(model);
+                }
+
+                await _appointmentRepository.UpdateAsync(appointment);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Doctors = (await _userRepository.GetAllAsync())
-                .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
-
+            await PopulateDoctorAndPatientLists();
             return View(model);
         }
 
+
+
         public async Task<IActionResult> Delete(Guid id)
         {
-            return View(await _appointmentRepository.GetAsync(id));
+            var appointment = await _appointmentRepository.GetAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (appointment.PatientId.ToString() != userId && appointment.DoctorId.ToString() != userId && !User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
+
+            return View(appointment);
         }
 
         [HttpPost]
@@ -100,6 +191,23 @@ namespace MedicalCenter.WebUI.Controllers
             catch
             {
                 return RedirectToAction("Delete", new { id = id });
+            }
+        }
+
+        private async Task PopulateDoctorAndPatientLists()
+        {
+            if (User.IsInRole("Admin") || User.IsInRole("Patient"))
+            {
+                var doctors = await _userRepository.GetUsersByRoleAsync("Doctor");
+                ViewBag.Doctors = doctors
+                    .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
+            }
+
+            if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+            {
+                var patients = await _userRepository.GetUsersByRoleAsync("Patient");
+                ViewBag.Patients = patients
+                    .Select(x => new SelectListItem { Text = x.FullName, Value = x.Id.ToString() }).ToList();
             }
         }
     }

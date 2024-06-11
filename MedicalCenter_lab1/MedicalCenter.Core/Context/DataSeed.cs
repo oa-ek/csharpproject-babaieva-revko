@@ -19,7 +19,7 @@ namespace MedicalCenter.Core.Context
             var (pId1,pId2) = _seedPatients(builder, pID);
             _seedAppointment(builder, dId1,dId2, pId1,pId2);
             _seedComment(builder, dId1, dId2, pId1, pId2);
-            _seedDiagnosis(builder, pId1,pId2);
+            _seedDiagnosis(builder,dId1,dId2, pId1,pId2);
         }
         private static (Guid, Guid, Guid) _seedRoles(ModelBuilder builder)
         {
@@ -260,7 +260,7 @@ namespace MedicalCenter.Core.Context
                 }) ;
                 
             }
-            static void _seedDiagnosis(ModelBuilder builder, Guid patientId, Guid patientId2)
+            static void _seedDiagnosis(ModelBuilder builder, Guid doctorId, Guid doctorId2, Guid patientId, Guid patientId2)
             {
                 builder.Entity<Diagnosis>().HasData(new List<Diagnosis>
                 {
@@ -269,6 +269,7 @@ namespace MedicalCenter.Core.Context
                     Date = new DateOnly(2023,04,29),
                     diagnosis = "Гострий бронхіт",
                     Perscription = "Чай з малиною 4 р. на день, постільний режим",
+                    DoctorId = doctorId2,
                     PatientId = patientId
                 },
                new Diagnosis
@@ -276,6 +277,7 @@ namespace MedicalCenter.Core.Context
                     Date = new DateOnly(2023,08,18),
                     diagnosis = "Ларингіт",
                     Perscription = "Чай з малиною 4 р. на день, постільний режим",
+                    DoctorId = doctorId,
                     PatientId = patientId2
                 },
                new Diagnosis
@@ -283,6 +285,7 @@ namespace MedicalCenter.Core.Context
                     Date = new DateOnly(2024,05,08),
                     diagnosis = "Нервовий зрив",
                     Perscription = "Адаптол 1 таб. 2 р. на день, Гліцисед 1 таб. 3 р. на день, сон мінімум 10 годин на день",
+                    DoctorId = doctorId,
                     PatientId = patientId
                 }
                 });

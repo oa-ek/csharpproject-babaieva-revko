@@ -43,6 +43,19 @@ namespace MedicalCenter.Core.Context
                 .IsRequired(false);
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Diagnosis>()
+               .HasOne(a => a.Doctor)
+               .WithMany(u => u.DocMedRecord)
+               .HasForeignKey(a => a.DoctorId)
+               .IsRequired(false);
+
+            modelBuilder.Entity<Diagnosis>()
+                .HasOne(a => a.Patient)
+                .WithMany(u => u.PatMedRecord)
+                .HasForeignKey(a => a.PatientId)
+                .IsRequired(false);
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }

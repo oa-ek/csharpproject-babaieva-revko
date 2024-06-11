@@ -1,5 +1,6 @@
 ﻿@using MedicalCenter.Core.Entities
-@model Appointment 
+@model Appointment
+
 @{
     var docs = ViewBag.Doctors as List<SelectListItem>;
     var pats = ViewBag.Patients as List<SelectListItem>;
@@ -7,24 +8,40 @@
 
 <h1>Новий запис</h1>
 
-
 <form asp-action="Create" enctype="multipart/form-data">
-
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group mt-3">
-                @Html.LabelFor(model => model.Doctor, "Лікар")
-                <select asp-for="DoctorId" asp-items="@(docs)" id="x1" class="form-control">
-                    <option value="0" selected="selected">- Оберіть лікаря -</option>
-                </select>
-
-                <input type="hidden" asp-for="DoctorId" />
+    @if (User.IsInRole("Admin") || User.IsInRole("Patient"))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mt-3">
+                    @Html.LabelFor(model => model.DoctorId, "Лікар")
+                    <select asp-for="DoctorId" asp-items="@(docs)" class="form-control">
+                        <option value="">- Оберіть лікаря -</option>
+                    </select>
+                    @Html.ValidationMessageFor(model => model.DoctorId, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-    </div>
+    }
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mt-3">
+                    @Html.LabelFor(model => model.PatientId, "Пацієнт")
+                    <select asp-for="PatientId" asp-items="@(pats)" class="form-control">
+                        <option value="">- Оберіть пацієнта -</option>
+                    </select>
+                    @Html.ValidationMessageFor(model => model.PatientId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group mt-3">
@@ -45,7 +62,7 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-12">
-            <button class="btn btn-primary btn-block" style="width: 100% !important" type="submit">Зберегти</button>
+            <button class="btn btn-primary btn-block" type="submit">Зберегти</button>
         </div>
     </div>
 </form>

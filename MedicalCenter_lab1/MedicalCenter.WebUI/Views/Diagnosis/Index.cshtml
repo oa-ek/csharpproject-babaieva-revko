@@ -6,9 +6,10 @@
     ViewData["Title"] = "Медична картка";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<a href="/Diagnosis/Create" class="btn btn-success float-end">Додати запис</a>
-
+@if (!User.IsInRole("Patient"))
+{
+    <a href="/Diagnosis/Create" class="btn btn-success float-end">Додати запис</a>
+}
 <div class="float-end" style="width:10px"></div>
 
 <h2 class="mt-3 mb-3">@ViewData["Title"]</h2>
@@ -19,7 +20,10 @@
             <th>Дата запису</th>
             <th>Діагноз</th>
             <th>Рекомендації до лікування</th>
-            <th>Дії</th>
+            @if (!User.IsInRole("Patient"))
+            {
+                <th>Дії</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -32,11 +36,13 @@
                 <td><strong>@p.diagnosis</strong></td>
 
                 <td> @p.Perscription</td>
-
+                @if (!User.IsInRole("Patient"))
+{
                 <td>
                     <a href="/Diagnosis/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
                     <a href="/Diagnosis/Delete/@p.Id" class="btn btn-danger">Видалити</a>
                 </td>
+}
             </tr>
         }
 

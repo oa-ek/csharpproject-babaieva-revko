@@ -19,36 +19,50 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        @if (!User.IsInRole("Patient") && !User.IsInRole("Doctor") && !User.IsInRole("Admin"))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home">Головна</a>
                         </li>
-                      
-                        
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Diagnosis">Медична картка</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Comment">Мої коментарі</a>
-                        </li>
+                        }
                         @if (User.IsInRole("Patient"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-action="My" asp-controller="Appointment">Мої записи на прийом</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointment">Мої записи на прийом</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Doctors">Лікарі</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Diagnosis">Медична картка</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Comment">Мої коментарі</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User">Лікарі</a>
                             </li>
                         }
-                        @if (User.IsInRole("Doctor"))
+                        @if (User.IsInRole("Admin") && User.IsInRole("Doctor"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Patients">Пацієнти</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointment">Мої записи на прийом</a>
                             </li>
-                        }
-                        @if (User.IsInRole("Admin"))
-                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Comment">Мої коментарі</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User">Користувачі</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Doctor") && !User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Appointment">Мої записи на прийом</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Comment">Мої коментарі</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User">Пацієнти</a>
                             </li>
                         }
                     </ul>

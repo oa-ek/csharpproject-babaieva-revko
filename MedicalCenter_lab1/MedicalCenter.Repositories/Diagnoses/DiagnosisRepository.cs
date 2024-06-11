@@ -19,6 +19,7 @@ namespace MedicalCenter.Repositories.Diagnoses
         {
             return await _ctx.Diagnosis
                 .Include(x => x.Patient)
+                .Include(x => x.Doctor)
                 .ToListAsync();
         }
     }

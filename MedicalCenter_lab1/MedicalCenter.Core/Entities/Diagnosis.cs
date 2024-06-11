@@ -14,9 +14,14 @@ namespace MedicalCenter.Core.Entities
         public string? diagnosis { get; set; }
         public string? Perscription { get; set; }
 
+        public User? Doctor { get; set; }
+        [ForeignKey(nameof(Doctor))]
+        public Guid? DoctorId { get; set; }
+
         public User? Patient { get; set; }
         [ForeignKey(nameof(Patient))]
         public Guid? PatientId { get; set; }
+
 
     }
 }
