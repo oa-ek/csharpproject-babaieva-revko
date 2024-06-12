@@ -12,8 +12,11 @@ namespace MedicalCenter.Core.Context
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("ProjectConnection");
+        }
 
-        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
