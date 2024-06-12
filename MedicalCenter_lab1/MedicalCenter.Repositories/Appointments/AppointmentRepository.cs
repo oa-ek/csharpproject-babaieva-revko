@@ -2,6 +2,7 @@
 using MedicalCenter.Core.Entities;
 using MedicalCenter.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
+using MedicalCenter.Repositories.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace MedicalCenter.Repositories.Appointments
                 .Include(x => x.Doctor)
                 .ToListAsync();
         }
+        
 
     }
 }
