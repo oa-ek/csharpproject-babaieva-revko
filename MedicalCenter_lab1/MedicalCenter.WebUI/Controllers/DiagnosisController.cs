@@ -1,4 +1,7 @@
-﻿using Humanizer;
+﻿using ClosedXML.Excel;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using Humanizer;
 using MedicalCenter.Core.Entities;
 using MedicalCenter.Repositories.Diagnoses;
 using MedicalCenter.Repositories.Users;
@@ -7,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 
 namespace MedicalCenter.WebUI.Controllers
 {
@@ -135,6 +139,54 @@ namespace MedicalCenter.WebUI.Controllers
             catch
             {
                 return RedirectToAction("Delete", new { id = id });
+            }
+        }
+
+        public async Task<IActionResult> GenerateReport()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var diagnoses = await _diagnosisRepository.GetAllAsync();
+            var userDiagnoses = diagnoses
+                .Where(d => d.PatientId.ToString() == userId)
+                .ToList();
+            /*var userDiagnoses = diagnoses
+                .Where(d => d.PatientId.ToString() == userId && d.Date.HasValue && d.Date.Value >= DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)))
+                .ToList();
+            */
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Report");
+
+                // Headers
+                worksheet.Cells[1, 1].Value = "Дата запису";
+                worksheet.Cells[1, 2].Value = "Діагноз";
+                worksheet.Cells[1, 3].Value = "Призначення";
+                worksheet.Cells[1, 4].Value = "Ім'я лікаря";
+
+                // Data
+                for (int i = 0; i < userDiagnoses.Count; i++)
+                {
+                    var diagnosis = userDiagnoses[i];
+                    worksheet.Cells[i + 2, 1].Value = diagnosis.Date?.ToString("dd-MM-yyyy");
+                    worksheet.Cells[i + 2, 2].Value = diagnosis.diagnosis;
+                    worksheet.Cells[i + 2, 3].Value = diagnosis.Perscription;
+                    worksheet.Cells[i + 2, 4].Value = diagnosis.Doctor?.FullName;
+                }
+
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                var fileName = $"Report_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
         }
     }
