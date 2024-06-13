@@ -16,6 +16,8 @@ namespace MedicalCenter.Repositories.Users
        Task<IEnumerable<IdentityRole<Guid>>> GetRolesAsync();
         Task<UserListItemModel> GetOneWithRolesAsync(Guid id);
         Task<IEnumerable<User>> GetUsersByRoleAsync(string roleName);
+        Task<IEnumerable<DoctorPopularityModel>> GetDoctorPopularityAsync();
+        Task<IEnumerable<AppointmentsByDoctorAndDateModel>> GetAppointmentsByDoctorAndDateAsync();
         Task<bool> CheckUser(Guid id);
         Task DeleteUser(Guid id);
     }

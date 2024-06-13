@@ -39,23 +39,67 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <td>
-                        <img src="@appointment.Doctor.Photo" /><br />@appointment.Doctor.FullName
+                        @if (appointment.Doctor != null)
+                        {
+                            <img src="@appointment.Doctor.Photo" />
+
+                            <br />
+
+                            @appointment.Doctor.FullName
+                        }
+                        else
+                        {
+                            <span>No doctor assigned</span>
+                        }
                     </td>
                     <td>
-                        <img src="@appointment.Patient.Photo" /><br />@appointment.Patient.FullName
+                        @if (appointment.Patient != null)
+                        {
+                            <img src="@appointment.Patient.Photo" />
+
+                            <br />
+
+                            @appointment.Patient.FullName
+                        }
+                        else
+                        {
+                            <span>No patient assigned</span>
+                        }
                     </td>
                 }
                 else if (User.IsInRole("Doctor"))
                 {
                     <td>
-                        <img src="@appointment.Patient.Photo" /><br />@appointment.Patient.FullName
+                        @if (appointment.Patient != null)
+                        {
+                            <img src="@appointment.Patient.Photo" />
+
+                            <br />
+
+                            @appointment.Patient.FullName
+                        }
+                        else
+                        {
+                            <span>No patient assigned</span>
+                        }
                     </td>
                 }
                 else if (User.IsInRole("Patient"))
                 {
                     <td>
-                        <img src="@appointment.Doctor.Photo" /><br />@appointment.Doctor.FullName
-                        </td>
+                        @if (appointment.Doctor != null)
+                        {
+                            <img src="@appointment.Doctor.Photo" />
+
+                            <br />
+
+                            @appointment.Doctor.FullName
+                        }
+                        else
+                        {
+                            <span>No doctor assigned</span>
+                        }
+                    </td>
                 }
                 <td>
                     <a href="@Url.Action("Edit", new { id = appointment.Id })" class="btn btn-warning">Редагувати</a>
