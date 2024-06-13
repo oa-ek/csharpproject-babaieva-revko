@@ -110,5 +110,36 @@ namespace MedicalCenter.Repositories.Users
             var usersInRole = await _userManager.GetUsersInRoleAsync(roleName);
             return usersInRole;
         }
+        public async Task<IEnumerable<DoctorPopularityModel>> GetDoctorPopularityAsync()
+        {
+            return await _ctx.Appointments
+                .GroupBy(a => a.DoctorId)
+                .Select(g => new DoctorPopularityModel
+                {
+                    DoctorId = g.Key ?? Guid.Empty,
+                    DoctorName = _ctx.Users.Where(u => u.Id == g.Key).Select(u => u.FullName).FirstOrDefault(),
+                    AppointmentCount = g.Count()
+                })
+                .OrderByDescending(d => d.AppointmentCount)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<AppointmentsByDoctorAndDateModel>> GetAppointmentsByDoctorAndDateAsync()
+        {
+            return await _ctx.Appointments
+                .GroupBy(a => new { a.DoctorId, Date = a.DateTime.HasValue ? a.DateTime.Value.Date : DateTime.Now.Date }) // Перетворення DateTime? на DateTime
+                .Select(g => new AppointmentsByDoctorAndDateModel
+                {
+                    DoctorId = g.Key.DoctorId ?? Guid.Empty,
+                    DoctorName = _ctx.Users.Where(u => u.Id == g.Key.DoctorId).Select(u => u.FullName).FirstOrDefault(),
+                    Date = g.Key.Date,
+                    AppointmentCount = g.Count()
+                })
+                .OrderBy(d => d.DoctorName).ThenBy(d => d.Date)
+                .ToListAsync();
+        }
+
+
+
+
     }
 }

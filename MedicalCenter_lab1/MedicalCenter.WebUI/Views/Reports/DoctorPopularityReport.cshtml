@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Doctor Popularity Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<style>
+    #doctorTable th, #doctorTable td {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+
+<table id="doctorTable" class="display">
+    <thead>
+        <tr>
+            <th>Doctor Name</th>
+            <th>Appointment Count</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<canvas id="doctorChart" width="400" height="200"></canvas>
+
+<div id="doctorCharts"></div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            function loadDoctorPopularityData() {
+                $.ajax({
+                    url: '@Url.Action("GetDoctorPopularity", "Reports")',
+                    method: 'GET',
+                    success: function (data) {
+                        $('#doctorTable').DataTable({
+                            data: data,
+                            columns: [
+                                { data: 'doctorName' },
+                                { data: 'appointmentCount' }
+                            ],
+                            destroy: true, // Allow table to be reinitialized
+                            searching: false, // Disable search box
+                            lengthChange: false, // Disable entries dropdown
+                            paging: false, // Disable pagination
+                            autoWidth: false, // Disable auto width adjustment
+                            info: false
+                        });
+
+                        var ctx = document.getElementById('doctorChart').getContext('2d');
+                        var chartData = {
+                            labels: data.map(d => d.doctorName),
+                            datasets: [{
+                                label: 'Appointment Count',
+                                data: data.map(d => d.appointmentCount),
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        };
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: chartData,
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            function loadAppointmentsByDoctorData() {
+                $.ajax({
+                    url: '@Url.Action("GetAppointmentsByDoctorAndDate", "Reports")',
+                    method: 'GET',
+                    success: function (data) {
+                        var groupedData = data.reduce((acc, cur) => {
+                            if (!acc[cur.doctorName]) {
+                                acc[cur.doctorName] = [];
+                            }
+                            acc[cur.doctorName].push(cur);
+                            return acc;
+                        }, {});
+
+                        $('#doctorCharts').empty(); 
+
+                        for (var doctorName in groupedData) {
+                            var doctorData = groupedData[doctorName];
+                            var canvasId = 'chart-' + doctorName.replace(/\s+/g, '-');
+                            $('#doctorCharts').append('<h2>' + doctorName + '</h2><canvas id="' + canvasId + '" width="400" height="200"></canvas>');
+
+                            var ctx = document.getElementById(canvasId).getContext('2d');
+                            var chartData = {
+                                labels: doctorData.map(d => new Date(d.date).toLocaleDateString()),
+                                datasets: [{
+                                    label: 'Appointment Count',
+                                    data: doctorData.map(d => d.appointmentCount),
+                                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: chartData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            loadDoctorPopularityData();
+            loadAppointmentsByDoctorData();
+
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            loadDoctorPopularityData();
+                            loadAppointmentsByDoctorData();
+                        } else {
+                            alert('Error creating appointment.');
+                        }
+                    },
+                    error: function () {
+                        alert('Error creating appointment.');
+                    }
+                });
+            });
+        });
+    </script>
+}
