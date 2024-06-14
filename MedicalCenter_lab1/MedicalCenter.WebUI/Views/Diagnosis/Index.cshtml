@@ -7,51 +7,46 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div style="float: right">
-@if (!User.IsInRole("Patient"))
-{
-    <a href="/Diagnosis/Create" class="btn btn-success float-end">Додати запис</a>
-}
-<div class="float-end" style="width:10px"></div>
-</div>
-
+                        @if (User.IsInRole("Patient"))
+                        {
+                            <a href="@Url.Action("GenerateReport", "Diagnosis")" class="btn btn-primary mb-3">Згенерувати звіт</a>
+                        }
+    <div class="float-end" style="width:10px"></div>
+                        </div>
 <h1>@ViewData["Title"]</h1>
 <div class="card card-default">
     <div class="px-6 py-4">
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>Дата запису</th>
-                    <th>Діагноз</th>
-                    <th>Рекомендації до лікування</th>
-                    @if (!User.IsInRole("Patient"))
-                    {
-                        <th>Дії</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in Model)
-                {
-                    <tr>
-                        <td>
-                            <strong>@p.Date</strong>
-                        </td>
-                        <td><strong>@p.diagnosis</strong></td>
 
-                        <td> @p.Perscription</td>
-                        @if (!User.IsInRole("Patient"))
-                        {
-                            <td>
-                                <a href="/Diagnosis/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
-                                <a href="/Diagnosis/Delete/@p.Id" class="btn btn-danger">Видалити</a>
-                            </td>
-                        }
-                    </tr>
-                }
-
-
-            </tbody>
-        </table>
+                                <tr>
+                                    <th>Дата запису</th>
+                                    <th>Діагноз</th>
+                                    <th>Рекомендації до лікування</th>
+                                    @if (!User.IsInRole("Patient"))
+                                    {
+                                        <th>Дії</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model)
+                                {
+                                    <tr>
+                                        <td><strong>@p.Date</strong></td>
+                                        <td><strong>@p.diagnosis</strong></td>
+                                        <td>@p.Perscription</td>
+                                        @if (!User.IsInRole("Patient"))
+                                        {
+                                            <td>
+                                                <a href="/Diagnosis/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
+                                                <a href="/Diagnosis/Delete/@p.Id" class="btn btn-danger">Видалити</a>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
     </div>
 
 </div>

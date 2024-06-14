@@ -5,7 +5,10 @@
     ViewData["Title"] = "Записи на прийом";
 }
 
-
+<div style="float:right">
+        <a href="/Appointment/Create" class="btn btn-success float-end">Записатися на прийом</a>
+        <div class="float-end" style="width:10px"></div> 
+</div>
 
 <h1>@ViewData["Title"]</h1>
 <div class="card card-default">
@@ -41,22 +44,66 @@
                         {
 
                             <td>
-                                <img src="@appointment.Doctor.Photo" /><br />@appointment.Doctor.FullName
+                                @if (appointment.Doctor != null)
+                                {
+                                    <img src="@appointment.Doctor.Photo" />
+
+                                    <br />
+
+                                    @appointment.Doctor.FullName
+                                }
+                                else
+                                {
+                                    <span>No doctor assigned</span>
+                                }
                             </td>
                             <td>
-                                <img src="@appointment.Patient.Photo" /><br />@appointment.Patient.FullName
+                                @if (appointment.Patient != null)
+                                {
+                                    <img src="@appointment.Patient.Photo" />
+
+                                    <br />
+
+                                    @appointment.Patient.FullName
+                                }
+                                else
+                                {
+                                    <span>No patient assigned</span>
+                                }
                             </td>
                         }
                         else if (User.IsInRole("Doctor"))
                         {
                             <td>
-                                <img src="@appointment.Patient.Photo" /><br />@appointment.Patient.FullName
+                                @if (appointment.Patient != null)
+                                {
+                                    <img src="@appointment.Patient.Photo" />
+
+                                    <br />
+
+                                    @appointment.Patient.FullName
+                                }
+                                else
+                                {
+                                    <span>No patient assigned</span>
+                                }
                             </td>
                         }
                         else if (User.IsInRole("Patient"))
                         {
                             <td>
-                                <img src="@appointment.Doctor.Photo" /><br />@appointment.Doctor.FullName
+                                @if (appointment.Doctor != null)
+                                {
+                                    <img src="@appointment.Doctor.Photo" />
+
+                                    <br />
+
+                                    @appointment.Doctor.FullName
+                                }
+                                else
+                                {
+                                    <span>No doctor assigned</span>
+                                }
                             </td>
                         }
                         <td>
