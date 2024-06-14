@@ -6,47 +6,65 @@
     ViewData["Title"] = "Медична картка";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div style="float: right">
-                        @if (User.IsInRole("Patient"))
-                        {
-                            <a href="@Url.Action("GenerateReport", "Diagnosis")" class="btn btn-primary mb-3">Згенерувати звіт</a>
-                        }
-    <div class="float-end" style="width:10px"></div>
-                        </div>
-<h1>@ViewData["Title"]</h1>
-<div class="card card-default">
-    <div class="px-6 py-4">
-        <table class="table table-bordered">
-            <thead>
 
-                                <tr>
-                                    <th>Дата запису</th>
-                                    <th>Діагноз</th>
-                                    <th>Рекомендації до лікування</th>
-                                    @if (!User.IsInRole("Patient"))
-                                    {
-                                        <th>Дії</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var p in Model)
-                                {
-                                    <tr>
-                                        <td><strong>@p.Date</strong></td>
-                                        <td><strong>@p.diagnosis</strong></td>
-                                        <td>@p.Perscription</td>
-                                        @if (!User.IsInRole("Patient"))
-                                        {
-                                            <td>
-                                                <a href="/Diagnosis/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
-                                                <a href="/Diagnosis/Delete/@p.Id" class="btn btn-danger">Видалити</a>
-                                            </td>
-                                        }
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-    </div>
-
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">@ViewData["Title"]</h1>
+    @if (User.IsInRole("Patient"))
+    {
+        <a href="@Url.Action("GenerateReport", "Diagnosis")" class="btn btn-primary">Згенерувати звіт</a>
+    }
 </div>
+
+<div class="card card-default w-100">
+    <div class="px-6 py-4">
+        <div style="overflow-x:auto;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Дата запису</th>
+                        <th>Діагноз</th>
+                        <th>Рекомендації до лікування</th>
+                        @if (!User.IsInRole("Patient"))
+                        {
+                            <th>Дії</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td><strong>@p.Date</strong></td>
+                            <td><strong>@p.diagnosis</strong></td>
+                            <td>@p.Perscription</td>
+                            @if (!User.IsInRole("Patient"))
+                            {
+                                <td>
+                                    <a href="/Diagnosis/Edit/@p.Id" class="btn btn-warning">Редагувати</a>
+                                    <a href="/Diagnosis/Delete/@p.Id" class="btn btn-danger">Видалити</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        width: 100%;
+    }
+
+    .table {
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .fixed-size-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+</style>

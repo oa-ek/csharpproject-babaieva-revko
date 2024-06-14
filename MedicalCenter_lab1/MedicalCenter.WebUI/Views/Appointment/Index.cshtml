@@ -6,115 +6,123 @@
 }
 
 <div style="float:right">
-        <a href="/Appointment/Create" class="btn btn-success float-end">Записатися на прийом</a>
-        <div class="float-end" style="width:10px"></div> 
+    <a href="/Appointment/Create" class="btn btn-success float-end">Записатися на прийом</a>
+    <div class="float-end" style="width:10px"></div>
 </div>
 
 <h1>@ViewData["Title"]</h1>
 <div class="card card-default">
     <div class="px-6 py-4">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Дата і час</th>
-                    <th>Короткий опис проблеми</th>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Лікар</th>
-                        <th>Пацієнт</th>
-                    }
-                    else if (User.IsInRole("Doctor"))
-                    {
-                        <th>Пацієнт</th>
-                    }
-                    else if (User.IsInRole("Patient"))
-                    {
-                        <th>Лікар</th>
-                    }
-                    <th>Дії</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var appointment in Model)
-                {
+        <div style="overflow-x:auto;">
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td>@appointment.DateTime</td>
-                        <td>@appointment.Type</td>
+                        <th>Дата і час</th>
+                        <th>Короткий опис проблеми</th>
                         @if (User.IsInRole("Admin"))
                         {
-
-                            <td>
-                                @if (appointment.Doctor != null)
-                                {
-                                    <img src="@appointment.Doctor.Photo" />
-
-                                    <br />
-
-                                    @appointment.Doctor.FullName
-                                }
-                                else
-                                {
-                                    <span>No doctor assigned</span>
-                                }
-                            </td>
-                            <td>
-                                @if (appointment.Patient != null)
-                                {
-                                    <img src="@appointment.Patient.Photo" />
-
-                                    <br />
-
-                                    @appointment.Patient.FullName
-                                }
-                                else
-                                {
-                                    <span>No patient assigned</span>
-                                }
-                            </td>
+                            <th>Лікар</th>
+                            <th>Пацієнт</th>
                         }
                         else if (User.IsInRole("Doctor"))
                         {
-                            <td>
-                                @if (appointment.Patient != null)
-                                {
-                                    <img src="@appointment.Patient.Photo" />
-
-                                    <br />
-
-                                    @appointment.Patient.FullName
-                                }
-                                else
-                                {
-                                    <span>No patient assigned</span>
-                                }
-                            </td>
+                            <th>Пацієнт</th>
                         }
                         else if (User.IsInRole("Patient"))
                         {
-                            <td>
-                                @if (appointment.Doctor != null)
-                                {
-                                    <img src="@appointment.Doctor.Photo" />
-
-                                    <br />
-
-                                    @appointment.Doctor.FullName
-                                }
-                                else
-                                {
-                                    <span>No doctor assigned</span>
-                                }
-                            </td>
+                            <th>Лікар</th>
                         }
-                        <td>
-                            <a href="@Url.Action("Edit", new { id = appointment.Id })" class="btn btn-warning">Редагувати</a>
-                            <a href="@Url.Action("Delete", new { id = appointment.Id })" class="btn btn-danger">Видалити</a>
-                        </td>
+                        <th>Дії</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var appointment in Model)
+                    {
+                        <tr>
+                            <td>@appointment.DateTime</td>
+                            <td>@appointment.Type</td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td>
+                                    @if (appointment.Doctor != null)
+                                    {
+                                        <img src="@appointment.Doctor.Photo" class="fixed-size-img" />
+                                        <br />
+                                        @appointment.Doctor.FullName
+                                    }
+                                    else
+                                    {
+                                        <span>No doctor assigned</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (appointment.Patient != null)
+                                    {
+                                        <img src="@appointment.Patient.Photo" class="fixed-size-img" />
+                                        <br />
+                                        @appointment.Patient.FullName
+                                    }
+                                    else
+                                    {
+                                        <span>No patient assigned</span>
+                                    }
+                                </td>
+                            }
+                            else if (User.IsInRole("Doctor"))
+                            {
+                                <td>
+                                    @if (appointment.Patient != null)
+                                    {
+                                        <img src="@appointment.Patient.Photo" class="fixed-size-img" />
+                                        <br />
+                                        @appointment.Patient.FullName
+                                    }
+                                    else
+                                    {
+                                        <span>No patient assigned</span>
+                                    }
+                                </td>
+                            }
+                            else if (User.IsInRole("Patient"))
+                            {
+                                <td>
+                                    @if (appointment.Doctor != null)
+                                    {
+                                        <img src="@appointment.Doctor.Photo" class="fixed-size-img" />
+                                        <br />
+                                        @appointment.Doctor.FullName
+                                    }
+                                    else
+                                    {
+                                        <span>No doctor assigned</span>
+                                    }
+                                </td>
+                            }
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = appointment.Id })" class="btn btn-warning">Редагувати</a>
+                                <a href="@Url.Action("Delete", new { id = appointment.Id })" class="btn btn-danger">Видалити</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
+<style>
+    .fixed-size-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
 
+    .table {
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .card {
+        overflow-x: auto;
+    }
+</style>
