@@ -7,34 +7,39 @@
     ViewData["Title"] = pageTitle;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div style="float: right">
 <a href="/Users/Create" class="btn btn-primary float-end">Створити</a>
+</div>
 
+<h1>@ViewData["Title"]</h1>
+<div class="card card-default">
+    <div class="px-6 py-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.FullName</td>
+                        <td>@u.Email</td>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var u in Model)
-        {
-            <tr>
-                <td>@u.FullName</td>
-                <td>@u.Email</td>
+                        <td>@string.Join(", ", u.Roles)</td>
+                        <td>
+                            <a href="/User/Details/@u.Id" class="btn btn-primary">Детально</a>
+                            <a href="/User/Edit/@u.Id" class="btn btn-warning">Edit</a>
+                            <a href="#" data-id="@u.Id" data-email="@u.Email" class="btn btn-danger btn-remove-user">Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-                <td>@string.Join(", ", u.Roles)</td>
-                <td>
-                    <a href="/User/Details/@u.Id" class="btn btn-primary">Детально</a>
-                    <a href="/User/Edit/@u.Id" class="btn btn-warning">Edit</a>
-                    <a href="#" data-id="@u.Id" data-email="@u.Email" class="btn btn-danger btn-remove-user">Remove</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
