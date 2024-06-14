@@ -1,6 +1,7 @@
 ﻿using MedicalCenter.Repositories.Models;
 using MedicalCenter.Repositories.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCenter.WebUI.Controllers
@@ -8,9 +9,11 @@ namespace MedicalCenter.WebUI.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public UserController(IUserRepository userRepository, IWebHostEnvironment webHostEnvironment)
         {
             this.userRepository = userRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -21,30 +24,44 @@ namespace MedicalCenter.WebUI.Controllers
             return View(await userRepository.GetAllWithRolesAsync());
         }
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpGet]
-        //public IActionResult Create()
-        //{
-        //    return View(new UserCreateModel());
-        //}
+        // GET: User/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        /*[Authorize(Roles = "Admin")]
+        // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserCreateModel model)
+        public async Task<IActionResult> Create(CreateUserModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await userRepository.CreateWithPasswordAsync(model);
+                if (model.ImageFile != null)
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(model.ImageFile.FileName);
+                    var extension = Path.GetExtension(model.ImageFile.FileName);
+                    var newFileName = $"{fileName}_{DateTime.Now:yyyyMMddHHmmss}{extension}";
+                    var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", newFileName);
 
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
+
+                    model.Photo = $"/images/{newFileName}";
+                }
+
+                var user = await userRepository.CreateWithPasswordAsync(model);
                 if (user != null)
                 {
-                    return RedirectToAction(nameof(Edit), new { id = user.Id });
+                    return RedirectToAction("Index", "Home");
                 }
+                ModelState.AddModelError("", "Failed to create user.");
             }
 
-            return View(new UserCreateModel());
-        }*/
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)

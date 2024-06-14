@@ -13,7 +13,8 @@ namespace MedicalCenter.Repositories.Users
     public interface IUserRepository : IRepository<User, Guid>
     {
         Task<IEnumerable<UserListItemModel>> GetAllWithRolesAsync();
-       Task<IEnumerable<IdentityRole<Guid>>> GetRolesAsync();
+        Task<User> CreateWithPasswordAsync(CreateUserModel model);
+        Task<IEnumerable<IdentityRole<Guid>>> GetRolesAsync();
         Task<UserListItemModel> GetOneWithRolesAsync(Guid id);
         Task<IEnumerable<User>> GetUsersByRoleAsync(string roleName);
         Task<IEnumerable<DoctorPopularityModel>> GetDoctorPopularityAsync();

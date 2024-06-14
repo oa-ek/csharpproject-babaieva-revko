@@ -55,6 +55,24 @@ namespace MedicalCenter.Repositories.Users
 
             return list;
         }
+
+        public async Task<User> CreateWithPasswordAsync(CreateUserModel model)
+        {
+            var newUser = new User
+            {
+                Id = Guid.NewGuid(),
+                UserName = model.Email,
+                FullName = model.FullName,
+                EmailConfirmed = false,
+                NormalizedUserName = model.Email.ToUpper(),
+                NormalizedEmail = model.Email.ToUpper(),
+                Email = model.Email
+            };
+
+            var result = await _userManager.CreateAsync(newUser, model.Password);
+
+            return await _ctx.Users.FirstAsync(x => x.Email == model.Email);
+        }
         public async Task<UserListItemModel> GetOneWithRolesAsync(Guid id)
         {
             var user = await _ctx.Users.FirstAsync(x => x.Id == id);
