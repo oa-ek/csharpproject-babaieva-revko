@@ -2,7 +2,127 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>@ViewData["Title"]</h1>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<div class="card card-default">
+    <div class="px-6 py-4">
+        <div class="text-center">
+            <h1 class="display-4">Welcome</h1>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Медичний Центр </title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f4f4f4;
+                    color: #333;
+                }
+
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+
+                header {
+                        background-color: #E6E6FAf;
+                    color: white;
+                    padding: 10px 0;
+                    text-align: center;
+                }
+
+                    header h1 {
+                        margin: 0;
+                    }
+
+                .intro {
+                    text-align: center;
+                    margin: 20px 0;
+                }
+
+                    .intro h2 {
+                        margin: 10px 0;
+                    }
+
+                .features {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-around;
+                }
+
+                .feature {
+                    background-color: white;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                    padding: 20px;
+                    margin: 10px;
+                    flex: 1;
+                    min-width: 250px;
+                    max-width: 30%;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+
+                    .feature h3 {
+                        margin-top: 0;
+                    }
+
+                .contact {
+                    text-align: center;
+                    margin: 20px 0;
+                }
+
+                footer {
+                    background-color: #00aaff;
+                    color: white;
+                    text-align: center;
+                    padding: 10px 0;
+                    margin-top: 20px;
+                }
+
+                    footer a {
+                        color: white;
+                        text-decoration: none;
+                    }
+            </style>
+            </head>
+            <body>
+                <header>
+                    <h1>Ласкаво просимо до Медичного Центру </h1>
+                </header>
+                <div class="container">
+                    <div class="intro">
+                        <h2>Ваше здоров'я – наша пріоритетність!</h2>
+                        <p>Ми пропонуємо широкий спектр медичних послуг від висококваліфікованих спеціалістів. Наші сучасні технології та індивідуальний підхід забезпечать вам найкраще лікування та догляд.</p>
+                    </div>
+                    <div class="features">
+                        <div class="feature">
+                            <h3>Професійні лікарі</h3>
+                            <p>З багаторічним досвідом</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Сучасне обладнання</h3>
+                            <p>Та новітні технології</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Індивідуальний підхід</h3>
+                            <p>До кожного пацієнта</p>
+                        </div>
+                        <div class="feature">
+                            <h3>Зручне розташування</h3>
+                            <p>Та комфортні умови</p>
+                        </div>
+                    </div>
+                    <div class="contact">
+                        <h2>Запишіться на прийом вже сьогодні!</h2>
+                        
+                    </div>
+                </div>
+                
+            </body>
+        </div>
+    </div>
 </div>
